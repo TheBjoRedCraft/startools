@@ -2,14 +2,12 @@ package dev.thebjoredcraft.startools
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.NamespacedKey
-import org.bukkit.inventory.ItemFactory
 import org.bukkit.inventory.ItemType
 import org.bukkit.persistence.PersistentDataType
-import org.checkerframework.checker.units.qual.min
 
 @Suppress("UnstableApiUsage")
 
-const val PREFIX = "<dark_gray>» <#B42C51>Startools <dark_gray>|<white>"
+const val PREFIX = "<dark_gray>» <#eb1e56>Startools <dark_gray>|<white>"
 
 object PluginConstants {
     private val miniMessage = MiniMessage.miniMessage()
@@ -19,17 +17,17 @@ object PluginConstants {
     val SHOVEL_KEY = NamespacedKey(plugin, "shovel")
 
     val PICKAXE = ItemType.NETHERITE_PICKAXE.createItemStack {
-        it.displayName(miniMessage.deserialize("<#B42C51>Star Pickaxe"))
+        it.customName(miniMessage.deserialize("<!i><#B42C51>Star Pickaxe"))
         it.persistentDataContainer.set(PICKAXE_KEY, PersistentDataType.BYTE, 1)
     }
 
     val AXE = ItemType.NETHERITE_AXE.createItemStack {
-        it.displayName(miniMessage.deserialize("<#B42C51>Star Axe"))
+        it.customName(miniMessage.deserialize("<!i><#B42C51>Star Axe"))
         it.persistentDataContainer.set(PICKAXE_KEY, PersistentDataType.BYTE, 1)
     }
 
     val SHOVEL = ItemType.NETHERITE_SHOVEL.createItemStack {
-        it.displayName(miniMessage.deserialize("<#B42C51>Star Shovel"))
+        it.customName(miniMessage.deserialize("<!i><#B42C51>Star Shovel"))
         it.persistentDataContainer.set(PICKAXE_KEY, PersistentDataType.BYTE, 1)
     }
 }

@@ -1,8 +1,6 @@
 package dev.thebjoredcraft.startools.command
 
 import com.mojang.brigadier.Command
-import com.mojang.brigadier.arguments.ArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import dev.thebjoredcraft.startools.PREFIX
 import dev.thebjoredcraft.startools.PluginConstants
 import dev.thebjoredcraft.startools.plugin
@@ -10,43 +8,54 @@ import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
-import org.bukkit.entity.Player
 
 object StarToolCommand {
-    fun register() = plugin.lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
-        event.registrar().register(
-            Commands.literal("startools")
-                .requires {
-                    it.sender.hasPermission("startools.command") ||
-                            it.sender.hasPermission("startools.command.give")
-                }
-                .then(Commands.literal("give")
+    fun register() =
+        plugin.lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
+            event.registrar().register(
+                Commands.literal("startools")
+                    .requires {
+                        it.sender.hasPermission("startools.command") ||
+                                it.sender.hasPermission("startools.command.give")
+                    }
+                    .then(
+                        Commands.literal("give")
                         .requires { it.sender.hasPermission("startools.command.give") }
-                        .then(Commands.argument("players", ArgumentTypes.players())
+                        .then(
+                            Commands.argument("players", ArgumentTypes.players())
                                 .then(Commands.literal("pickaxe").executes {
-                                    val players = it.getArgument("players", PlayerSelectorArgumentResolver::class.java).resolve(it.source)
+                                    val players = it.getArgument(
+                                        "players",
+                                        PlayerSelectorArgumentResolver::class.java
+                                    ).resolve(it.source)
 
                                     players.forEach { target -> target.give(PluginConstants.PICKAXE) }
-                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Pickaxe to <#B42C51>${players.size} player(s)")
+                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Pickaxe to <#eb1e56>${players.size} player(s)")
                                     Command.SINGLE_SUCCESS
                                 })
                                 .then(Commands.literal("axe").executes {
-                                    val players = it.getArgument("players", PlayerSelectorArgumentResolver::class.java).resolve(it.source)
+                                    val players = it.getArgument(
+                                        "players",
+                                        PlayerSelectorArgumentResolver::class.java
+                                    ).resolve(it.source)
 
                                     players.forEach { target -> target.give(PluginConstants.AXE) }
-                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Axe to <#B42C51>${players.size} player(s)")
+                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Axe to <#eb1e56>${players.size} player(s)")
                                     Command.SINGLE_SUCCESS
                                 })
                                 .then(Commands.literal("shovel").executes {
-                                    val players = it.getArgument("players", PlayerSelectorArgumentResolver::class.java).resolve(it.source)
+                                    val players = it.getArgument(
+                                        "players",
+                                        PlayerSelectorArgumentResolver::class.java
+                                    ).resolve(it.source)
 
                                     players.forEach { target -> target.give(PluginConstants.SHOVEL) }
-                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Shovel to <#B42C51>${players.size} player(s)")
+                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Shovel to <#eb1e56>${players.size} player(s)")
                                     Command.SINGLE_SUCCESS
                                 })
                         )
-                )
-                .build()
-        )
-    }
+                    )
+                    .build()
+            )
+        }
 }
