@@ -45,7 +45,9 @@ object StarAxeListener : Listener {
                 val blockEvent = BlockBreakEvent(block, player)
                 Bukkit.getPluginManager().callEvent(blockEvent)
 
-                if (blockEvent.isCancelled || block.type == Material.AIR) return@forEach
+                if (blockEvent.isCancelled || block.type == Material.AIR) {
+                    return@forEach
+                }
 
                 block.breakNaturally(item)
 
