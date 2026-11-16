@@ -7,12 +7,16 @@ import org.bukkit.inventory.ItemType
 import org.bukkit.persistence.PersistentDataType
 import org.checkerframework.checker.units.qual.min
 
+@Suppress("UnstableApiUsage")
+
+const val PREFIX = "<dark_gray>» <#B42C51>Startools <dark_gray>|<white>"
+
 object PluginConstants {
+    private val miniMessage = MiniMessage.miniMessage()
+
     val PICKAXE_KEY = NamespacedKey(plugin, "pickaxe")
     val AXE_KEY = NamespacedKey(plugin, "axe")
     val SHOVEL_KEY = NamespacedKey(plugin, "shovel")
-
-    private val miniMessage = MiniMessage.miniMessage()
 
     val PICKAXE = ItemType.NETHERITE_PICKAXE.createItemStack {
         it.displayName(miniMessage.deserialize("<#B42C51>Star Pickaxe"))
