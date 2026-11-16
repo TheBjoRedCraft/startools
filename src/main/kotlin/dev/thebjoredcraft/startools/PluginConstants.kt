@@ -22,11 +22,11 @@ object PluginConstants {
 
     val AXE = ItemType.NETHERITE_AXE.createItemStack {
         it.customName(miniMessage.deserialize("<!i><#B42C51>Star Axe"))
-        it.persistentDataContainer.set(PICKAXE_KEY, PersistentDataType.BYTE, 1)
+        it.persistentDataContainer.set(AXE_KEY, PersistentDataType.BYTE, 1)
     }
 
     val SHOVEL = ItemType.NETHERITE_SHOVEL.createItemStack {
         it.customName(miniMessage.deserialize("<!i><#B42C51>Star Shovel"))
-        it.persistentDataContainer.set(PICKAXE_KEY, PersistentDataType.BYTE, 1)
+        it.persistentDataContainer.set(SHOVEL_KEY, PersistentDataType.BYTE, 1)
     }
 }
