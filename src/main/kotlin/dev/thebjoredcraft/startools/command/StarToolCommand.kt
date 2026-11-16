@@ -20,41 +20,46 @@ object StarToolCommand {
                     }
                     .then(
                         Commands.literal("give")
-                        .requires { it.sender.hasPermission("startools.command.give") }
-                        .then(
-                            Commands.argument("players", ArgumentTypes.players())
-                                .then(Commands.literal("pickaxe").executes {
-                                    val players = it.getArgument(
-                                        "players",
-                                        PlayerSelectorArgumentResolver::class.java
-                                    ).resolve(it.source)
+                            .requires { it.sender.hasPermission("startools.command.give") }
+                            .then(
+                                Commands.argument("players", ArgumentTypes.players())
+                                    .then(Commands.literal("pickaxe").executes {
+                                        val players = it.getArgument(
+                                            "players",
+                                            PlayerSelectorArgumentResolver::class.java
+                                        ).resolve(it.source)
 
-                                    players.forEach { target -> target.give(PluginConstants.PICKAXE) }
-                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Pickaxe to <#eb1e56>${players.size} player(s)")
-                                    Command.SINGLE_SUCCESS
-                                })
-                                .then(Commands.literal("axe").executes {
-                                    val players = it.getArgument(
-                                        "players",
-                                        PlayerSelectorArgumentResolver::class.java
-                                    ).resolve(it.source)
+                                        players.forEach { target -> target.give(PluginConstants.PICKAXE) }
+                                        it.source.sender.sendRichMessage("$PREFIX Gave Star Pickaxe to <#eb1e56>${players.size} player(s)")
+                                        Command.SINGLE_SUCCESS
+                                    })
+                                    .then(Commands.literal("axe").executes {
+                                        val players = it.getArgument(
+                                            "players",
+                                            PlayerSelectorArgumentResolver::class.java
+                                        ).resolve(it.source)
 
-                                    players.forEach { target -> target.give(PluginConstants.AXE) }
-                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Axe to <#eb1e56>${players.size} player(s)")
-                                    Command.SINGLE_SUCCESS
-                                })
-                                .then(Commands.literal("shovel").executes {
-                                    val players = it.getArgument(
-                                        "players",
-                                        PlayerSelectorArgumentResolver::class.java
-                                    ).resolve(it.source)
+                                        players.forEach { target -> target.give(PluginConstants.AXE) }
+                                        it.source.sender.sendRichMessage("$PREFIX Gave Star Axe to <#eb1e56>${players.size} player(s)")
+                                        Command.SINGLE_SUCCESS
+                                    })
+                                    .then(Commands.literal("shovel").executes {
+                                        val players = it.getArgument(
+                                            "players",
+                                            PlayerSelectorArgumentResolver::class.java
+                                        ).resolve(it.source)
 
-                                    players.forEach { target -> target.give(PluginConstants.SHOVEL) }
-                                    it.source.sender.sendRichMessage("$PREFIX Gave Star Shovel to <#eb1e56>${players.size} player(s)")
-                                    Command.SINGLE_SUCCESS
-                                })
-                        )
+                                        players.forEach { target -> target.give(PluginConstants.SHOVEL) }
+                                        it.source.sender.sendRichMessage("$PREFIX Gave Star Shovel to <#eb1e56>${players.size} player(s)")
+                                        Command.SINGLE_SUCCESS
+                                    })
+                            )
                     )
+                    .then(Commands.literal("reload").executes {
+                        plugin.configManager.reload()
+                        it.source.sender.sendRichMessage("$PREFIX Reloaded config")
+                        Command.SINGLE_SUCCESS
+                    }.build())
                     .build()
             )
         }

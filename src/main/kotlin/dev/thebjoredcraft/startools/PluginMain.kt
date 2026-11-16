@@ -12,13 +12,17 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 val plugin get() = JavaPlugin.getPlugin(PluginMain::class.java)
-
-val config by lazy {
-    ConfigManager.create(plugin.dataPath.resolve("config.yml"), RailwayConfigFormat.YAML, Config())
-        .load()
-}
+val config get() = plugin.configManager.value
 
 class PluginMain : SuspendingJavaPlugin() {
+    val configManager by lazy {
+        ConfigManager.create(plugin.dataPath.resolve("config.yml"), RailwayConfigFormat.YAML, Config())
+    }
+
+    override suspend fun onLoadAsync() {
+        configManager.load()
+    }
+
     override suspend fun onEnableAsync() {
         StarToolCommand.register()
         Bukkit.getPluginManager().registerEvents(StarPickaxeListener, this)
