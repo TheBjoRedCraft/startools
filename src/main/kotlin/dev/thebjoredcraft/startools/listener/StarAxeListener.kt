@@ -1,5 +1,6 @@
 package dev.thebjoredcraft.startools.listener
 
+import com.github.benmanes.caffeine.cache.Caffeine
 import dev.thebjoredcraft.startools.PluginConstants
 import dev.thebjoredcraft.startools.config
 import org.bukkit.Bukkit
@@ -13,15 +14,16 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.math.log
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.toJavaDuration
 
 object StarAxeListener : Listener {
     private val processingBlocks = ConcurrentHashMap.newKeySet<Block>()
 
-    private val logTags = listOf(
-        Tag.LOGS,
-        Tag.CRIMSON_STEMS,
-        Tag.WARPED_STEMS
-    )
+    private val cooldown = Caffeine.newBuilder()
+        .expireAfterWrite(config.starAxe.cooldown.milliseconds.toJavaDuration())
+        .build<UUID, Unit>()
 
     @EventHandler(ignoreCancelled = true)
     fun onBlockBreak(event: BlockBreakEvent) {
@@ -39,11 +41,20 @@ object StarAxeListener : Listener {
         if (!item.persistentDataContainer.has(PluginConstants.AXE_KEY)) {
             return
         }
+
+        if (cooldown.getIfPresent(player.uniqueId) != null) {
+            return
+        }
+
         if (!isLog(event.block)) {
             return
         }
 
         val logs = findConnectedLogs(event.block)
+
+        if(logs.isNotEmpty()) {
+            cooldown.put(player.uniqueId, Unit)
+        }
 
         logs.forEach { block ->
             processingBlocks.add(block)
@@ -104,6 +115,12 @@ object StarAxeListener : Listener {
 
         return visited.filter { it != start }
     }
+
+    private val logTags = listOf(
+        Tag.LOGS,
+        Tag.CRIMSON_STEMS,
+        Tag.WARPED_STEMS
+    )
 
     private fun isLog(block: Block) = logTags.any { it.isTagged(block.type) }
 }

@@ -1,5 +1,6 @@
 package dev.thebjoredcraft.startools.listener
 
+import com.github.benmanes.caffeine.cache.Caffeine
 import dev.thebjoredcraft.startools.PluginConstants
 import dev.thebjoredcraft.startools.config
 import org.bukkit.Bukkit
@@ -10,10 +11,17 @@ import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.toJavaDuration
 
 object StarShovelListener : Listener {
     private val processingBlocks = ConcurrentHashMap.newKeySet<Block>()
+
+    private val cooldown = Caffeine.newBuilder()
+        .expireAfterWrite(config.starShovel.cooldown.milliseconds.toJavaDuration())
+        .build<UUID, Unit>()
 
     @EventHandler(ignoreCancelled = true)
     fun onBlockBreak(event: BlockBreakEvent) {
@@ -29,6 +37,10 @@ object StarShovelListener : Listener {
         val itemInHand = player.inventory.itemInMainHand
 
         if (!itemInHand.persistentDataContainer.has(PluginConstants.SHOVEL_KEY)) {
+            return
+        }
+
+        if (cooldown.getIfPresent(player.uniqueId) != null) {
             return
         }
 
@@ -80,6 +92,10 @@ object StarShovelListener : Listener {
             if (!blockEvent.isCancelled) {
                 validBlocks.add(block)
             }
+        }
+
+        if(validBlocks.isNotEmpty()) {
+            cooldown.put(player.uniqueId, Unit)
         }
 
         validBlocks.forEach { block ->
