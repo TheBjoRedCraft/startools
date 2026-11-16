@@ -46,7 +46,7 @@ tasks {
 paper {
     main = "dev.thebjoredcraft.startools.PluginMain"
     apiVersion = "1.21"
-    foliaSupported = true
+    foliaSupported = false // Maybe later, context switch costs resources
 
     authors = listOf("TheBjoRedCraft")
 }

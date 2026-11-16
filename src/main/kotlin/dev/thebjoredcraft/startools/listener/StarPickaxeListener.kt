@@ -42,34 +42,44 @@ object StarPickaxeListener : Listener {
                         right.z.roundToInt() * x + up.z.roundToInt() * y
                     )
 
-                    add(block)
+                    if (block != event.block) {
+                        add(block)
+                    }
                 }
             }
         }
+
+        val validBlocks = mutableListOf<Block>()
 
         blocks.forEach { block ->
-            if (block == event.block) {
-                return@forEach
-            }
-
             processingBlocks.add(block)
 
-            try {
-                val blockEvent = BlockBreakEvent(block, player)
-                Bukkit.getPluginManager().callEvent(blockEvent)
+            val blockEvent = BlockBreakEvent(block, player)
+            Bukkit.getPluginManager().callEvent(blockEvent)
 
-                if (!blockEvent.isCancelled) {
-                    block.breakNaturally(itemInHand)
-                    block.world.spawnParticle(
-                        Particle.DUST, block.location, 10, Particle.DustOptions(
-                            Color.fromRGB(180, 44, 81), 1f
-                        )
-                    )
-                    player.playSound(block.location, Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1f, 1f)
-                }
-            } finally {
-                processingBlocks.remove(block)
+            if (!blockEvent.isCancelled) {
+                validBlocks.add(block)
             }
         }
+
+        validBlocks.forEach { block ->
+            block.breakNaturally(itemInHand)
+
+            block.world.spawnParticle(
+                Particle.DUST,
+                block.location,
+                10,
+                Particle.DustOptions(Color.fromRGB(180, 44, 81), 1f)
+            )
+
+            player.playSound(
+                block.location,
+                Sound.BLOCK_AMETHYST_BLOCK_BREAK,
+                1f,
+                1f
+            )
+        }
+
+        blocks.forEach(processingBlocks::remove)
     }
 }
