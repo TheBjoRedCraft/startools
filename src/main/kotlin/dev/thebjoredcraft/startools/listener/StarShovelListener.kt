@@ -86,6 +86,7 @@ object StarShovelListener : Listener {
         blocks.forEach { block ->
             processingBlocks.add(block)
 
+            @Suppress("UnstableApiUsage")
             val blockEvent = BlockBreakEvent(block, player)
             Bukkit.getPluginManager().callEvent(blockEvent)
 
@@ -108,6 +109,7 @@ object StarShovelListener : Listener {
                 Particle.DustOptions(config.starShovel.breakParticleColor.toBukkitColor(), 1f)
             )
 
+            @Suppress("UnstableApiUsage")
             player.playSound(config.starShovel.breakSound.toSound(), block.location)
         }
 
