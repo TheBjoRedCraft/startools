@@ -47,7 +47,7 @@ object StarPickaxeListener : Listener {
                     }
                 }
             }
-        }
+        }.filter { it.isPreferredTool(itemInHand) }
 
         val validBlocks = mutableListOf<Block>()
 
@@ -67,8 +67,8 @@ object StarPickaxeListener : Listener {
 
             block.world.spawnParticle(
                 Particle.DUST,
-                block.location,
-                10,
+                block.location.clone().add(0.5, 0.5, 0.5),
+                25,
                 Particle.DustOptions(Color.fromRGB(180, 44, 81), 1f)
             )
 

@@ -26,7 +26,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
     implementation("com.github.ben-manes.caffeine:caffeine:3.3.1")
 
-    implementation("me.devnatan:inventory-framework-platform-paper:3.8.0.-alpha")
+    implementation("me.devnatan:inventory-framework-platform-paper:3.8.0-rc1")
 }
 
 kotlin {
