@@ -1,11 +1,15 @@
 package dev.thebjoredcraft.startools.config
 
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.sound.Sound
 import org.bukkit.Color
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
 @ConfigSerializable
 data class Config(
-    val a: String = ""
+    val starPickaxe: StarPickaxeConfig = StarPickaxeConfig(),
+    val starShovel: StarShovelConfig = StarShovelConfig(),
+    val starAxe: StarAxeConfig = StarAxeConfig()
 ) {
     @ConfigSerializable
     data class StarPickaxeConfig(
@@ -27,6 +31,7 @@ data class Config(
     data class StarAxeConfig(
         val enabled: Boolean = true,
         val cooldown: Long = 0L,
+        val maxBlocks: Int = 50,
         val breakParticleColor: RGBColor = RGBColor(180, 44, 81),
         val breakSound: SoundConfig = SoundConfig(soundKey = "minecraft:block.amethyst_block.step")
     )
@@ -36,7 +41,9 @@ data class Config(
         val soundKey: String = "",
         val soundVolume: Float = 1f,
         val soundPitch: Float = 1f
-    )
+    ) {
+        fun toSound() = Sound.sound(Key.key(soundKey), Sound.Source.BLOCK, soundVolume, soundPitch)
+    }
 
     @ConfigSerializable
     data class RGBColor(

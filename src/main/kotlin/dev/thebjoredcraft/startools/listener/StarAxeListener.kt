@@ -1,7 +1,11 @@
 package dev.thebjoredcraft.startools.listener
 
 import dev.thebjoredcraft.startools.PluginConstants
-import org.bukkit.*
+import dev.thebjoredcraft.startools.config
+import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.Particle
+import org.bukkit.Tag
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
@@ -11,7 +15,6 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 object StarAxeListener : Listener {
-    private const val MAX_LOGS = 50
     private val processingBlocks = ConcurrentHashMap.newKeySet<Block>()
 
     private val logTags = listOf(
@@ -22,6 +25,10 @@ object StarAxeListener : Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onBlockBreak(event: BlockBreakEvent) {
+        if (!config.starAxe.enabled) {
+            return
+        }
+
         if (event.block in processingBlocks) {
             return
         }
@@ -55,15 +62,10 @@ object StarAxeListener : Listener {
                     Particle.DUST,
                     block.location.clone().add(0.5, 0.5, 0.5),
                     10,
-                    Particle.DustOptions(Color.fromRGB(180, 44, 81), 1f)
+                    Particle.DustOptions(config.starAxe.breakParticleColor.toBukkitColor(), 1f)
                 )
 
-                player.playSound(
-                    block.location,
-                    Sound.BLOCK_AMETHYST_BLOCK_STEP,
-                    1f,
-                    1f
-                )
+                player.playSound(config.starAxe.breakSound.toSound(), block.location)
             } finally {
                 processingBlocks.remove(block)
             }
@@ -77,7 +79,7 @@ object StarAxeListener : Listener {
         visited.add(start)
         queue.add(start)
 
-        while (queue.isNotEmpty() && visited.size < MAX_LOGS + 1) {
+        while (queue.isNotEmpty() && visited.size < config.starAxe.maxBlocks + 1) {
             val current = queue.removeFirst()
 
             for (face in BlockFace.entries) {
@@ -94,7 +96,7 @@ object StarAxeListener : Listener {
 
                 queue.add(relative)
 
-                if (visited.size >= MAX_LOGS + 1) {
+                if (visited.size >= config.starAxe.maxBlocks + 1) {
                     break
                 }
             }

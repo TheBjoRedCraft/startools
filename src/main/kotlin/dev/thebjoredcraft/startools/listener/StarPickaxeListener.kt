@@ -1,7 +1,10 @@
 package dev.thebjoredcraft.startools.listener
 
 import dev.thebjoredcraft.startools.PluginConstants
-import org.bukkit.*
+import dev.thebjoredcraft.startools.config
+import org.bukkit.Bukkit
+import org.bukkit.Particle
+import org.bukkit.Tag
 import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
@@ -14,6 +17,10 @@ object StarPickaxeListener : Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onBlockBreak(event: BlockBreakEvent) {
+        if (!config.starPickaxe.enabled) {
+            return
+        }
+
         if (event.block in processingBlocks) {
             return
         }
@@ -82,15 +89,10 @@ object StarPickaxeListener : Listener {
                 Particle.DUST,
                 block.location.clone().add(0.5, 0.5, 0.5),
                 10,
-                Particle.DustOptions(Color.fromRGB(180, 44, 81), 1f)
+                Particle.DustOptions(config.starPickaxe.breakParticleColor.toBukkitColor(), 1f)
             )
 
-            player.playSound(
-                block.location,
-                Sound.BLOCK_AMETHYST_BLOCK_STEP,
-                1f,
-                1f
-            )
+            player.playSound(config.starPickaxe.breakSound.toSound(), block.location)
         }
 
         blocks.forEach(processingBlocks::remove)
