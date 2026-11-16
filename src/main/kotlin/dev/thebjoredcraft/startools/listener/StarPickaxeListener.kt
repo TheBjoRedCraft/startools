@@ -7,9 +7,7 @@ import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.util.Vector
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.math.roundToInt
 
 object StarPickaxeListener : Listener {
     private val processingBlocks = ConcurrentHashMap.newKeySet<Block>()
@@ -26,28 +24,22 @@ object StarPickaxeListener : Listener {
         if (!itemInHand.persistentDataContainer.has(PluginConstants.PICKAXE_KEY)) {
             return
         }
-        val direction = player.location.direction
-        val right = direction.clone().crossProduct(Vector(0, 1, 0)).normalize()
-        val up = right.clone().crossProduct(direction).normalize()
 
-        val rightBlock = Vector(
-            right.x.roundToInt().toDouble(),
-            right.y.roundToInt().toDouble(),
-            right.z.roundToInt().toDouble()
-        )
-
-        val upBlock = Vector(
-            up.x.roundToInt().toDouble(),
-            up.y.roundToInt().toDouble(),
-            up.z.roundToInt().toDouble()
-        )
+        if (!Tag.MINEABLE_PICKAXE.isTagged(event.block.type) || !event.block.isPreferredTool(
+                itemInHand
+            )
+        ) {
+            return
+        }
 
         val hitFace = player.rayTraceBlocks(6.0)?.hitBlockFace ?: return
 
         val blocks = buildList {
             for (x in -1..1) {
                 for (y in -1..1) {
-                    if (x == 0 && y == 0) continue
+                    if (x == 0 && y == 0) {
+                        continue
+                    }
 
                     val block = when (hitFace) {
                         BlockFace.NORTH, BlockFace.SOUTH ->

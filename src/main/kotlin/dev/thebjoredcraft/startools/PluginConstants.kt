@@ -5,10 +5,9 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemType
 import org.bukkit.persistence.PersistentDataType
 
-@Suppress("UnstableApiUsage")
-
 const val PREFIX = "<dark_gray>» <#eb1e56>Startools <dark_gray>|<white>"
 
+@Suppress("UnstableApiUsage")
 object PluginConstants {
     private val miniMessage = MiniMessage.miniMessage()
 
