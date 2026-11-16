@@ -94,7 +94,7 @@ object StarPickaxeListener : Listener {
             }
         }
 
-        if (validBlocks.isNotEmpty()) {
+        if (validBlocks.isNotEmpty() && config.starPickaxe.cooldown > 0) {
             cooldown.put(player.uniqueId, Unit)
         }
 

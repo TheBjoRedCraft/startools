@@ -14,7 +14,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.math.log
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.toJavaDuration
 
@@ -52,7 +51,7 @@ object StarAxeListener : Listener {
 
         val logs = findConnectedLogs(event.block)
 
-        if(logs.isNotEmpty()) {
+        if (logs.isNotEmpty() && config.starAxe.cooldown > 0) {
             cooldown.put(player.uniqueId, Unit)
         }
 

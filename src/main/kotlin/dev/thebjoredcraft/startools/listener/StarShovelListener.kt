@@ -94,7 +94,7 @@ object StarShovelListener : Listener {
             }
         }
 
-        if(validBlocks.isNotEmpty()) {
+        if (validBlocks.isNotEmpty() && config.starShovel.cooldown > 0) {
             cooldown.put(player.uniqueId, Unit)
         }
 
