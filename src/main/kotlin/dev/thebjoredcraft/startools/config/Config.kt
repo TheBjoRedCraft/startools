@@ -88,6 +88,7 @@ data class Config(
             "minecraft:efficiency" to 5
         )
     ) {
+        @Transient
         private val enchantmentRegistry =
             RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
 

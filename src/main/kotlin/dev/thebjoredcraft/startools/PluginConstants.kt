@@ -1,7 +1,9 @@
 package dev.thebjoredcraft.startools
 
+import dev.thebjoredcraft.startools.itemupdate.printHash
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.NamespacedKey
+import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
 const val PREFIX = "<dark_gray>» <#eb1e56>Startools <dark_gray>|<white>"
@@ -18,24 +20,24 @@ object PluginConstants {
             editPersistentDataContainer {
                 it.set(PICKAXE_KEY, PersistentDataType.BYTE, 1)
             }
-        }
+        }.printHash()
 
     val AXE
         get() = config.starAxe.item.toItemStack().apply {
             editPersistentDataContainer {
                 it.set(AXE_KEY, PersistentDataType.BYTE, 1)
             }
-        }
+        }.printHash()
 
     val SHOVEL
         get() = config.starShovel.item.toItemStack().apply {
             editPersistentDataContainer {
                 it.set(SHOVEL_KEY, PersistentDataType.BYTE, 1)
             }
-        }
+        }.printHash()
 
 
-    fun isStarTool(itemStack: org.bukkit.inventory.ItemStack): Boolean {
+    fun isStarTool(itemStack: ItemStack): Boolean {
         return itemStack.persistentDataContainer.has(PICKAXE_KEY) ||
                 itemStack.persistentDataContainer.has(AXE_KEY) ||
                 itemStack.persistentDataContainer.has(SHOVEL_KEY)

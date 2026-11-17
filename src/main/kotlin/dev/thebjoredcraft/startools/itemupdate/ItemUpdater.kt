@@ -8,6 +8,11 @@ import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
 import java.security.MessageDigest
 
+
+fun ItemStack.printHash(): ItemStack {
+    return ItemUpdater.printHash(this)
+}
+
 object ItemUpdater {
     private val hasher = MessageDigest.getInstance("SHA-256")
     val HASH_KEY = NamespacedKey(plugin, "hash")
@@ -22,7 +27,7 @@ object ItemUpdater {
         shovelHash = PluginConstants.SHOVEL.generateHash()
     }
 
-    private fun printHash(itemStack: ItemStack): ItemStack {
+    fun printHash(itemStack: ItemStack): ItemStack {
         itemStack.editPersistentDataContainer {
             it.set(HASH_KEY, PersistentDataType.STRING, itemStack.generateHash())
         }
