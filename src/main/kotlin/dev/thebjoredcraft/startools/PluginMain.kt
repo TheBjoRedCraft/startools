@@ -5,6 +5,7 @@ import dev.thebjoredcraft.railway.config.RailwayConfigFormat
 import dev.thebjoredcraft.railway.config.manager.ConfigManager
 import dev.thebjoredcraft.startools.command.StarToolCommand
 import dev.thebjoredcraft.startools.config.Config
+import dev.thebjoredcraft.startools.itemupdate.ItemUpdater
 import dev.thebjoredcraft.startools.listener.StarAxeListener
 import dev.thebjoredcraft.startools.listener.StarPickaxeListener
 import dev.thebjoredcraft.startools.listener.StarShovelListener
@@ -16,11 +17,16 @@ val config get() = plugin.configManager.value
 
 class PluginMain : SuspendingJavaPlugin() {
     val configManager by lazy {
-        ConfigManager.create(plugin.dataPath.resolve("config.yml"), RailwayConfigFormat.YAML, Config())
+        ConfigManager.create(
+            plugin.dataPath.resolve("config.yml"),
+            RailwayConfigFormat.YAML,
+            Config()
+        )
     }
 
     override suspend fun onLoadAsync() {
         configManager.load()
+        ItemUpdater.refreshHashes()
     }
 
     override suspend fun onEnableAsync() {

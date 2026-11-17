@@ -3,6 +3,7 @@ package dev.thebjoredcraft.startools.command
 import com.mojang.brigadier.Command
 import dev.thebjoredcraft.startools.PREFIX
 import dev.thebjoredcraft.startools.PluginConstants
+import dev.thebjoredcraft.startools.itemupdate.ItemUpdater
 import dev.thebjoredcraft.startools.plugin
 import io.papermc.paper.command.brigadier.Commands
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
@@ -57,6 +58,7 @@ object StarToolCommand {
                     )
                     .then(Commands.literal("reload").executes {
                         plugin.configManager.reload()
+                        ItemUpdater.refreshHashes()
                         it.source.sender.sendRichMessage("$PREFIX Reloaded config")
                         Command.SINGLE_SUCCESS
                     }.build())
