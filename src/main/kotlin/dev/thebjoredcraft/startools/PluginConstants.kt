@@ -33,4 +33,11 @@ object PluginConstants {
                 it.set(SHOVEL_KEY, PersistentDataType.BYTE, 1)
             }
         }
+
+
+    fun isStarTool(itemStack: org.bukkit.inventory.ItemStack): Boolean {
+        return itemStack.persistentDataContainer.has(PICKAXE_KEY) ||
+                itemStack.persistentDataContainer.has(AXE_KEY) ||
+                itemStack.persistentDataContainer.has(SHOVEL_KEY)
+    }
 }

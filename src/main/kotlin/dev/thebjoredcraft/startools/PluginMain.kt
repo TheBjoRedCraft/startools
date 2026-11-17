@@ -5,6 +5,7 @@ import dev.thebjoredcraft.railway.config.RailwayConfigFormat
 import dev.thebjoredcraft.railway.config.manager.ConfigManager
 import dev.thebjoredcraft.startools.command.StarToolCommand
 import dev.thebjoredcraft.startools.config.Config
+import dev.thebjoredcraft.startools.itemupdate.ItemStatusListener
 import dev.thebjoredcraft.startools.itemupdate.ItemUpdater
 import dev.thebjoredcraft.startools.listener.StarAxeListener
 import dev.thebjoredcraft.startools.listener.StarPickaxeListener
@@ -34,5 +35,6 @@ class PluginMain : SuspendingJavaPlugin() {
         Bukkit.getPluginManager().registerEvents(StarPickaxeListener, this)
         Bukkit.getPluginManager().registerEvents(StarAxeListener, this)
         Bukkit.getPluginManager().registerEvents(StarShovelListener, this)
+        Bukkit.getPluginManager().registerEvents(ItemStatusListener, this)
     }
 }

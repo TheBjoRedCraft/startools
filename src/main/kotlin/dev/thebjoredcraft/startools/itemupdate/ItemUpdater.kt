@@ -1,10 +1,10 @@
 package dev.thebjoredcraft.startools.itemupdate
 
 import dev.thebjoredcraft.startools.PluginConstants
-import dev.thebjoredcraft.startools.config
 import dev.thebjoredcraft.startools.plugin
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
 import java.security.MessageDigest
 
@@ -16,17 +16,18 @@ object ItemUpdater {
     var axeHash = "UNINITIALIZED"
     var shovelHash = "UNINITIALIZED"
 
-
     fun refreshHashes() {
-        pickaxeHash = config.starPickaxe.item.toItemStack().generateHash()
-        axeHash = config.starAxe.item.toItemStack().generateHash()
-        shovelHash = config.starShovel.item.toItemStack().generateHash()
+        pickaxeHash = PluginConstants.PICKAXE.generateHash()
+        axeHash = PluginConstants.AXE.generateHash()
+        shovelHash = PluginConstants.SHOVEL.generateHash()
     }
 
-    fun printHash(itemStack: ItemStack) = itemStack.apply {
-        editPersistentDataContainer {
+    private fun printHash(itemStack: ItemStack): ItemStack {
+        itemStack.editPersistentDataContainer {
             it.set(HASH_KEY, PersistentDataType.STRING, itemStack.generateHash())
         }
+
+        return itemStack
     }
 
     fun isNewestItem(itemStack: ItemStack): Boolean {
@@ -42,6 +43,34 @@ object ItemUpdater {
             isShovel -> hash == shovelHash
             else -> true
         }
+    }
+
+    fun updateItem(oldItem: ItemStack): ItemStack {
+        val newItem = when {
+            oldItem.persistentDataContainer.has(PluginConstants.PICKAXE_KEY) ->
+                PluginConstants.PICKAXE
+
+            oldItem.persistentDataContainer.has(PluginConstants.AXE_KEY) ->
+                PluginConstants.AXE
+
+            oldItem.persistentDataContainer.has(PluginConstants.SHOVEL_KEY) ->
+                PluginConstants.SHOVEL
+
+            else -> return oldItem
+        }
+
+        val oldMeta = oldItem.itemMeta
+        val newMeta = newItem.itemMeta
+
+        if (oldMeta is Damageable &&
+            newMeta is Damageable
+        ) {
+            newMeta.damage = oldMeta.damage
+        }
+
+        newItem.itemMeta = newMeta
+
+        return printHash(newItem)
     }
 
     fun ItemStack.generateHash(): String {
