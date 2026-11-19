@@ -8,6 +8,7 @@ import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Color
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
 @ConfigSerializable
@@ -22,8 +23,12 @@ data class Config(
         val item: ItemConfig = ItemConfig(
             material = Material.NETHERITE_PICKAXE,
             name = "<!i><#B42C51>Star Pickaxe",
-            lore = listOf(),
-            enchantments = mapOf()
+            lore = listOf(
+                "<dark_gray>Breaks a 3x3 area of blocks",
+            ),
+            enchantments = mapOf(
+                Enchantment.EFFICIENCY.key.asString() to 5
+            )
         ),
         val cooldown: Long = 0L,
         val breakParticleColor: RGBColor = RGBColor(180, 44, 81),
@@ -36,8 +41,12 @@ data class Config(
         val item: ItemConfig = ItemConfig(
             material = Material.NETHERITE_SHOVEL,
             name = "<!i><#B42C51>Star Shovel",
-            lore = listOf(),
-            enchantments = mapOf()
+            lore = listOf(
+                "<dark_gray>Breaks a 3x3 area of blocks",
+            ),
+            enchantments = mapOf(
+                Enchantment.EFFICIENCY.key.asString() to 5
+            )
         ),
         val cooldown: Long = 0L,
         val breakParticleColor: RGBColor = RGBColor(180, 44, 81),
@@ -47,14 +56,18 @@ data class Config(
     @ConfigSerializable
     data class StarAxeConfig(
         val enabled: Boolean = true,
+        val maxBlocks: Int = 50,
         val item: ItemConfig = ItemConfig(
             material = Material.NETHERITE_AXE,
             name = "<!i><#B42C51>Star Axe",
-            lore = listOf(),
-            enchantments = mapOf()
+            lore = listOf(
+                "<dark_gray>Breaks up to $maxBlocks blocks of log",
+            ),
+            enchantments = mapOf(
+                Enchantment.EFFICIENCY.key.asString() to 5
+            )
         ),
         val cooldown: Long = 0L,
-        val maxBlocks: Int = 50,
         val breakParticleColor: RGBColor = RGBColor(180, 44, 81),
         val breakSound: SoundConfig = SoundConfig(soundKey = "minecraft:block.amethyst_block.step")
     )
